@@ -1,4 +1,4 @@
-# Moveo Bot — README (3 webhooks)
+# Moveo Bot — README
 
 > **Stack**: Next.js (App Router), TypeScript, Google APIs (Sheets/Calendar), OpenAI (Chat Completions), Node/Vercel Runtime.
 >
