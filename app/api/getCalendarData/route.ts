@@ -1,3 +1,55 @@
+/**
+* Rota API: getCalendarData
+* ------------------------------------------------------------
+* Finalidade
+* - Receber uma instrução do agente Moveo (ex.: "mostrar agenda",
+* "tenho horário amanhã às 14h?", "quais horários livres na quarta?")
+* e consultar o Google Calendar para retornar um resumo de eventos
+* e/ou janelas de disponibilidade.
+*
+* Contexto
+* - O e-mail do calendário pode vir da planilha (Google Sheets) ou das
+* `session_variables` já salvas na sessão da Moveo (ex.: `user_email`).
+*
+* Entradas (HTTP POST /app/api/getCalendarData/route.ts)
+* - Body (JSON):
+* {
+* "input": { "text": "<mensagem do usuário>" },
+* "session_variables": { "user_email": "<email opcional>" }
+* }
+* • `input.text` pode ser linguagem natural. A lógica deve tentar extrair
+* datas/horários (ex.: hoje, amanhã, quarta 14h, etc.).
+*
+* Saída (200 OK)
+* - JSON no formato esperado pela Moveo:
+* {
+* "output": {
+* "live_instructions": { "conteudo": "<texto de resposta>" },
+* "session_variables": {
+* "calendar_email": "<email usado>",
+* "last_calendar_query": "<intervalo consultado>",
+* "last_calendar_result_count": <qtdEventos>
+* }
+* }
+* }
+*
+* Códigos de erro
+* - 400: body inválido ou sem `input.text`.
+* - 404: e-mail do calendário não encontrado (nem em sessão, nem na planilha).
+* - 500: falha interna (erros de integração/Google API ou exceções inesperadas).
+*
+* Dependências
+* - '@/lib/google' → provê os clientes `calendar` e, opcionalmente, `sheets`.
+* - Variáveis de ambiente do Google (credenciais) previamente configuradas.
+*
+* Convenções e Observações
+* - Fuso horário padrão: 'America/Sao_Paulo'. Ajuste se necessário.
+* - Formato do retorno SEMPRE segue o envelope da Moveo:
+* output.live_instructions.conteudo
+* - Não expor detalhes sensíveis de erros ao usuário.
+* - Evitar dependências extras (ex.: Zod). Validar campos manualmente.
+*/
+
 import { NextRequest, NextResponse } from 'next/server';
 import { calendar } from '@/lib/google';
 
