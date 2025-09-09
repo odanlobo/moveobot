@@ -1,3 +1,44 @@
+/**
+ * Rota API: getUserData
+ * ------------------------------------------------------------
+ * Finalidade
+ *   - Recebe um texto (número de telefone) vindo do agente Moveo,
+ *     busca os dados do usuário em uma planilha do Google Sheets
+ *     e devolve as instruções + variáveis de sessão para uso no chat.
+ *
+ * Entradas (HTTP POST /app/api/getUserData/route.ts)
+ *   - Body (JSON): { "input": { "text": "<telefone ou mensagem>" }, ... }
+ *     • O telefone pode vir com símbolos/espaços. A rota normaliza para dígitos.
+ *
+ * Saída (200 OK)
+ *   - JSON no formato esperado pela Moveo:
+ *     {
+ *       "output": {
+ *         "live_instructions": { "conteudo": "<texto de resposta para o usuário>" },
+ *         "session_variables": {
+ *           "user_email": "<email>",
+ *           "user_phone": "<telefone>",
+ *           "user_name": "<nome>"
+ *         }
+ *       }
+ *     }
+ *
+ * Códigos de erro
+ *   - 400: body inválido ou texto ausente.
+ *   - 404: usuário não localizado na planilha.
+ *   - 500: falha interna (erros de integração ou exceções inesperadas).
+ *
+ * Dependências
+ *   - '@/lib/google' → provê o cliente `sheets` (Google Sheets API).
+ *   - Variáveis de ambiente de credenciais do Google já configuradas.
+ *
+ * Observações de implementação
+ *   - O número de telefone é limpo para conter apenas dígitos.
+ *   - A busca prioriza correspondência exata (após normalização) nas colunas
+ *     relacionadas a telefone/celular/phone.
+ *   - Logs são enviados via `console.log`/`console.error` para depuração.
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { sheets } from '@/lib/google';
 
