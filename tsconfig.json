@@ -1,0 +1,86 @@
+{
+  // ===================================================================
+  // tsconfig.json — Configuração do TypeScript para Next.js (App Router)
+  // - Suporta imports absolutos com "@/..." apontando para "src/"
+  // - Habilita tipos do Node (fs, path, process.env, etc.)
+  // - Mantém o build a cargo do Next (noEmit: true)
+  // ===================================================================
+  
+  "compilerOptions": {
+    // Gera JS moderno compatível com o runtime do Next/Node 18+
+    "target": "ES2020", 
+
+    // Tipos globais disponíveis (DOM para front, ESNext para recursos novos)
+    "lib": ["dom", "dom.iterable", "esnext"],
+
+    // Inclui definições de tipo do Node (fs, path, process)
+    "types": ["node"],
+
+    // Permite conviver com .js caso exista algum util antigo
+    "allowJs": true,
+
+    // Pula checagem de tipos das libs para builds mais rápidos
+    "skipLibCheck": true,
+
+    // Modo estrito do TS (recomendado): ajuda a evitar bugs sutis
+    "strict": true,
+
+    // Obriga usar a mesma caixa de letras em imports entre SOs diferentes
+    "forceConsistentCasingInFileNames": true,
+
+    // Next cuida da emissão/compilação; aqui não geramos saída
+    "noEmit": true,
+
+    // Facilita importar pacotes CommonJS com sintaxe de ES Modules
+    "esModuleInterop": true,
+
+    // Usa módulos ES (o bundler do Next entende)
+    "module": "esnext",
+
+    // Resolução de módulos no padrão do bundler do Next 13/14+
+    "moduleResolution": "bundler",
+
+    // Permite importar JSON (útil para ler arquivos de configuração)
+    "resolveJsonModule": true,
+
+    // Cada arquivo é tratado como módulo isolado (requisito do Next)
+    "isolatedModules": true,
+
+    // Mantém JSX para o Next transformar (não transpila aqui)
+    "jsx": "preserve",
+
+    // -----------------------------------------------------------------
+    // ALIASES / IMPORTS ABSOLUTOS
+    // - baseUrl em "." para enxergar "app/" e "src/"
+    // - "@/..." aponta para "src/..." (ex.: "@/lib/sheets")
+    // -----------------------------------------------------------------
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+      // (Opcional) Se quiser um atalho explícito:
+      // "@lib/*": ["src/lib/*"]
+    },
+
+    // Compilações incrementais (melhora DX)
+    "incremental": true,
+
+    // Plugin oficial do Next para melhorar diagnósticos
+    "plugins": [{ "name": "next" }]
+  },
+
+  // Quais arquivos o TS deve considerar no projeto
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+
+  // O que ignorar (evita ruído e acelera checagem)
+  "exclude": [
+    "node_modules"
+    // (Opcional) Ignore testes se preferir:
+    // "**/*.spec.ts",
+    // "**/*.test.ts"
+  ]
+}
