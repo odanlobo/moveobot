@@ -7,7 +7,7 @@
 > - `app/api/getCalendarData/route.ts`
 > - `app/api/editData/route.ts`
 
-Este README detalha a lógica e o funcionamento do seu código, cobrindo as três rotas de webhook utilizadas pela Moveo, a camada de integrações (`/lib/google.ts` e `/lib/openai.ts`), formato de resposta **obrigatório** para a Moveo e a proposta de **dupla verificação da última mensagem** (anti-condição de corrida).
+Este README detalha a lógica e o funcionamento do código, cobrindo as três rotas de webhook utilizadas pela Moveo, a camada de integrações (`/lib/google.ts` e `/lib/openai.ts`), formato de resposta **obrigatório** para a Moveo e a proposta de **dupla verificação da última mensagem** (anti-condição de corrida).
 
 ---
 
